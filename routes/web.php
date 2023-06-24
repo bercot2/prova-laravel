@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FilesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -17,6 +18,6 @@ Route::get('/user/show', [UserController::class, 'UserCreateSuccess'])->name('us
 
 Route::match(['get', 'post'], '/portal', [LoginController::class, 'showPortal'])->name('portal')->middleware('auth');
 
-Route::match(['get', 'post'], '/portal/upload', [LoginController::class, 'upload'])->name('upload.document');
-Route::match(['get', 'post'], '/portal/share', [LoginController::class, 'share'])->name('share.document');
-Route::match(['get', 'post'], '/portal/search', [LoginController::class, 'search'])->name('search.document');
+Route::match(['get', 'post'], '/portal/upload', [FilesController::class, 'uploadDocument'])->name('upload.document');
+Route::match(['get', 'post'], '/portal/share', [FilesController::class, 'shareDocument'])->name('share.document');
+Route::match(['get', 'post'], '/portal/search', [FilesController::class, 'searchDocument'])->name('search.document');
