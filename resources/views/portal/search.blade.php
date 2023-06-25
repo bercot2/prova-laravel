@@ -61,7 +61,7 @@
                             <td>{{ $file['email_user'] }}</td>
                             <td>{{ $file['filename'] }}</td>
                             <td>
-                                <a href="{{ route('download', $file['filename']) }}">Download</a>
+                                <a href="{{ route('download', $file['id']) }}">Download</a>
                             </td>
                         </tr>
                     @endforeach

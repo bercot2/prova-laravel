@@ -101,15 +101,38 @@ class FilesController extends Controller
                 ];
             }
 
+            $shared_files = DocumentoCompartilhado::where('user_id', $user_id)->get();
+
+            foreach ($shared_files as $file) {
+                $documento_id = $file->documento_id;
+
+                $owner_file = File::where('id', $documento_id)->get(['id', 'filename', 'path', 'user_id'])->first();
+
+                $owner = $user = User::select('name', 'email')->where('id', $owner_file->user_id)->first();
+
+                $storageFiles[] = [
+                    'id' => $owner_file->id,
+                    'name_user' => $owner->name,
+                    'email_user' => $owner->email,
+                    'filename' => $owner_file->filename,
+                    'url' => $owner_file->path
+                ];
+            }
+
             return view('portal.search', ['files' => $storageFiles]);
         }
     }
 
-    public function download($file)
+    public function download($id_file)
     {
-        $user_id = auth()->id();
+        $owner_file = File::where('id', $id_file)->first();
 
-        $filePath = storage_path('app/public/' . $user_id . '/' . $file);
+        $path_file = $owner_file -> path;
+        $filename = $owner_file -> filename;
+
+        $path = 'app/' . $path_file . '/' . $filename;
+
+        $filePath = storage_path($path);
 
         if (file_exists($filePath)) {
             return response()->download($filePath);
