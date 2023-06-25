@@ -21,3 +21,5 @@ Route::match(['get', 'post'], '/portal', [LoginController::class, 'showPortal'])
 Route::match(['get', 'post'], '/portal/upload', [FilesController::class, 'uploadDocument'])->name('upload.document');
 Route::match(['get', 'post'], '/portal/share', [FilesController::class, 'shareDocument'])->name('share.document');
 Route::match(['get', 'post'], '/portal/search', [FilesController::class, 'searchDocument'])->name('search.document');
+
+Route::get('/download/{id_file}', [FilesController::class, 'download'])->name('download');

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload</title>
+    <title>Meus Documentos</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('vendor/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/util.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
-
+    
     <style>
         .btn-back {
             position: fixed;
@@ -37,17 +37,36 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-upload">
-                <div class="portal-options" style="display: flex;justify-content: center;flex-direction: column;">
-                    <form action="{{ route('upload.document') }}" method="post" enctype="multipart/form-data" class="login100-form">
+                <div class="container">        
+                    <h3>Compartilhar Documentos</h3>
+                    
+                    <br>
+                    <br>
+
+                    <!-- Formulário de compartilhamento -->
+                    <form action="{{ route('share.document') }}" method="POST">
                         @csrf
+                        <label for="document">Selecione o Documento:</label>
+                        <select name="document" id="document">
+                            @foreach ($documents as $document)
+                                <option value="{{ $document->id }}">{{ $document->filename }}</option>
+                            @endforeach
+                        </select>
 
-                        <input type="file" name="file" class="input100">
+                        <br>
+                        <br>
+                        
+                        <label for="user">Selecione o Usuário:</label>
+                        <select name="user" id="user">
+                            @foreach ($otherUsers as $user)
+                                <option value="{{ $user->id }}">{{ $user->email }}</option>
+                            @endforeach
+                        </select>
+                        
+                        <br>
+                        <br>
 
-                        <div class="container-login100-form-btn">
-                            <div class="wrap-login100-form-btn">
-                                <input type="submit" value="Gravar" class="login100-form-btn" style="background: #333333; cursor:pointer">
-                            </div>
-                        </div>
+                        <input type="submit" value="Compartilhar" class="login100-form-btn " style="gap:6px;background: #333333; border-radius: 10px; cursor: pointer">
                     </form>
                 </div>
             </div>
@@ -55,8 +74,6 @@
     </div>
 
     <a href="{{ route('portal') }}" class="btn-back">Voltar</a>
-
-    <div id="dropDownSelect1"></div>
 
     <script src="{{ asset('vendor/jquery/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('vendor/animsition/js/animsition.min.js') }}"></script>

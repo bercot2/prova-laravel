@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload</title>
+    <title>Search Documents</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -36,25 +36,44 @@
     
     <div class="limiter">
         <div class="container-login100">
-            <div class="wrap-upload">
-                <div class="portal-options" style="display: flex;justify-content: center;flex-direction: column;">
-                    <form action="{{ route('upload.document') }}" method="post" enctype="multipart/form-data" class="login100-form">
-                        @csrf
-
-                        <input type="file" name="file" class="input100">
-
-                        <div class="container-login100-form-btn">
-                            <div class="wrap-login100-form-btn">
-                                <input type="submit" value="Gravar" class="login100-form-btn" style="background: #333333; cursor:pointer">
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="search-results" style="width: 680px;">
+                <h2>Pesquisa de Documentos</h2>
+                <br>
+                <br>
+                <form action="{{ route('search.document') }}" method="GET" class="search-form">
+                    <input type="text" name="search" placeholder="Digite um termo de pesquisa" value="{{ request('search') }}" style="width: 310px;">
+                    <button type="submit">Pesquisar</button>
+                </form>
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome Proprietário</th>
+                            <th>Email Proprietário</th>
+                            <th>Arquivo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($files as $file)
+                        <tr>
+                            <td>{{ $file['name_user'] }}</td>
+                            <td>{{ $file['email_user'] }}</td>
+                            <td>{{ $file['filename'] }}</td>
+                            <td>
+                                <a href="{{ route('download', $file['filename']) }}">Download</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                @if ($files instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    {{ $files->links() }}
+                @endif
+                <a href="{{ route('portal') }}" class="btn-back">Voltar</a>
             </div>
         </div>
     </div>
-
-    <a href="{{ route('portal') }}" class="btn-back">Voltar</a>
 
     <div id="dropDownSelect1"></div>
 
@@ -67,6 +86,5 @@
     <script src="{{ asset('vendor/daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('vendor/countdowntime/countdowntime.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-
-</body>
+</body> 
 </html>

@@ -62,7 +62,7 @@
 						</div>
 					</div>
 
-					<div class="text-center p-t-115">
+					<div class="text-center p-t-75">
 						<span class="txt1">
 							Não tem uma Conta?
 						</span>

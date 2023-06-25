@@ -20,8 +20,6 @@ class CreateDocumentosCompartilhadosTable extends Migration
 
             $table->foreign('documento_id')->references('id')->on('files')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
-            // Adicione quaisquer outros campos necessários para o vínculo
         });
     }
 
