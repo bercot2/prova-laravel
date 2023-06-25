@@ -46,6 +46,21 @@
                     <!-- Formulário de compartilhamento -->
                     <form action="{{ route('share.document') }}" method="POST">
                         @csrf
+
+                        <label for="action">Selecione a Ação:</label><br>
+                        <label for="checkbox-visualizar">
+                            <input type="checkbox" id="checkbox-visualizar" name="action[]" value="visualizar">
+                            Visualizar
+                        </label>
+
+                        <label for="checkbox-excluir">
+                            <input type="checkbox" id="checkbox-excluir" name="action[]" value="excluir">
+                            Excluir
+                        </label>
+
+                        <br>
+                        <br>
+
                         <label for="document">Selecione o Documento:</label>
                         <select name="document" id="document">
                             @foreach ($documents as $document)

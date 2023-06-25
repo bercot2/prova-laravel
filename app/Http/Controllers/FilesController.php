@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\User;
 use App\Models\DocumentoCompartilhado;
+use App\Models\AcoesDocumentosCompartilhados;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -52,6 +53,29 @@ class FilesController extends Controller
             $otherUsers = User::where('id', '!=', $user->id)->get();
 
             return view('portal.share', compact('documents', 'otherUsers'));
+        } else if (request()->isMethod('POST')) {
+
+            $document_id = $request->input('document');
+            $user_id = $request->input('user');
+            $list_actions = $request->input('action');
+
+            $share_document = DocumentoCompartilhado::firstOrCreate([
+                'documento_id' => $document_id,
+                'user_id' => $user_id,
+            ]);
+
+            $share_document_id = $share_document->id;
+
+            AcoesDocumentosCompartilhados::where('documento_compartilhado_id', $share_document_id)->delete();
+
+            foreach ($list_actions as $action) {
+                $acoes_documentos_compartilhados = new AcoesDocumentosCompartilhados();
+                $acoes_documentos_compartilhados->documento_compartilhado_id = $share_document_id;
+                $acoes_documentos_compartilhados->acao = $action;
+                $acoes_documentos_compartilhados->save();
+            }
+
+            return view('portal.shareSuccess')->with('delay', 3);
         }
     }
 

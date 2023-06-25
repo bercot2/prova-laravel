@@ -22,8 +22,8 @@
 			<form class="login100-form validate-form" action="{{ route('user.cadastro') }}" method="POST">
 				@csrf <!-- Adiciona um campo CSRF para proteção contra ataques -->
 
-				<span class="login100-form-title">
-					Increva-se
+				<span class="login100-form-title" style="margin-bottom: 25px;">
+					Inscreva-se
 				</span>
 
 				<div class="wrap-input100 validate-input">

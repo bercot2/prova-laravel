@@ -8,6 +8,8 @@ class DocumentoCompartilhado extends Model
 {
     protected $table = 'documentos_compartilhados';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'documento_id',
         'user_id',
