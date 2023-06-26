@@ -10,7 +10,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-Route::get('/user', [UserController::class, 'showSingUp'])->name('user.singup');
+Route::get('/user', [UserController::class, 'showSingUp'])->name('user.signup');
 Route::post('/user/create', [UserController::class, 'cadastrarUsuario'])->name('user.cadastro');
 Route::get('/user/show', [UserController::class, 'UserCreateSuccess'])->name('user.success');
 

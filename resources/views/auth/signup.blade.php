@@ -41,6 +41,14 @@
 					<span class="focus-input100"></span>
 				</div>
 
+
+				@if (isset($error) && $error)
+					<div style="color:red;text-align: center;">
+						<b>{{ $error }}</b>
+					</div>
+					<br>
+				@endif
+
 				<div class="container-login100-form-btn">
 					<input type="submit" class="login100-form-btn" style="background: #333333; border-radius: 10px;cursor:pointer" value="Inscreva-se">
 				</div>

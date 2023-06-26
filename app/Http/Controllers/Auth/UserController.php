@@ -11,12 +11,19 @@ class UserController extends Controller
 {
     public function showSingUp()
     {
-        return view('auth.singup');
+        return view('auth.signup');
     }
 
     public function cadastrarUsuario(UserRequest $request)
     {
         $dados = $request->validated();
+    
+        $email = $dados['email'];
+        $existingUser = User::where('email', $email)->first();
+
+        if ($existingUser) {
+            return view('auth.signup')->with('error', 'Já existe um cadastro para este usuário!');
+        }
 
         $user = User::create($dados);
 

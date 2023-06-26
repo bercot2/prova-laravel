@@ -67,7 +67,7 @@
 							Não tem uma Conta?
 						</span>
 
-						<a class="txt2" href="{{ route('user.singup') }}">
+						<a class="txt2" href="{{ route('user.signup') }}">
 							<b>Crie uma</b>
 						</a>
 					</div>
