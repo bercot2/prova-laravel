@@ -40,7 +40,8 @@
                 <h2>Pesquisa de Documentos</h2>
                 <br>
                 <br>
-                <form action="{{ route('search.document') }}" method="GET" class="search-form">
+                <form action="{{ route('search.filter.document') }}" method="POST" class="search-form">
+                    @csrf
                     <input type="text" name="search" placeholder="Digite um termo de pesquisa" style="width: 310px;">
                     <button type="submit">Pesquisar</button>
                 </form>

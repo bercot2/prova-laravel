@@ -141,6 +141,80 @@ class FilesController extends Controller
         }
     }
 
+    public function searchFilterDocument(Request $request){
+        if (request()->isMethod('POST')){
+
+            $filter = $request->input('search');
+
+            if ($filter === null){
+                return redirect()->route('search.document');
+            }
+
+            $user_id = auth()->id();
+
+            $files = File::where('user_id', $user_id)->get(['id', 'filename', 'path', 'user_id']);
+
+            $storageFiles = [];
+
+            foreach ($files as $file) {
+
+                $user = $user = User::select('name', 'email')->where('id', $file->user_id)->first();
+                
+                if (strpos($user->name, $filter) !== false || strpos($user->email, $filter) !== false || strpos($file->filename, $filter) !== false) {
+                    $storageFiles[] = [
+                        'id' => $file->id,
+                        'name_user' => $user->name,
+                        'email_user' => $user->email,
+                        'filename' => $file->filename,
+                        'url' => $file->path,
+                        'acoes' => ['Download', 'Excluir']
+                    ];
+                }
+            }
+
+            $shared_files = DocumentoCompartilhado::where('user_id', $user_id)->get();
+
+            foreach ($shared_files as $file) {
+                $documento_id = $file->documento_id;
+
+                $owner_file = File::where('id', $documento_id)->get(['id', 'filename', 'path', 'user_id'])->first();
+
+                $owner = User::select('name', 'email')->where('id', $owner_file->user_id)->first();
+
+                $actions = AcoesDocumentosCompartilhados::where('documento_compartilhado_id', $file->id)->get(['acao']);
+                
+                $listActions = [];
+
+                if ($actions){
+                    foreach ($actions as $action){
+                        if ($action->acao === 'visualizar'){
+                            $listActions[] = 'Download';
+                        } else {
+                            $listActions[] = 'Excluir';
+                        }
+                    };
+                } else {
+                    $listActions[] = 'Download';
+                }
+
+                if (strpos($owner->name, $filter) !== false || strpos($owner->email, $filter) !== false || strpos($owner_file->filename, $filter) !== false) {
+                    $storageFiles[] = [
+                        'id' => $owner_file->id,
+                        'name_user' => $owner->name,
+                        'email_user' => $owner->email,
+                        'filename' => $owner_file->filename,
+                        'url' => $owner_file->path,
+                        'acoes' => $listActions
+                    ];
+                }
+            }
+
+            return view('portal.search', ['files' => $storageFiles]);
+
+            return view('portal.search', ['files' => $new_files]);
+        }
+    }
+
     public function downloadFile($id_file)
     {
         $owner_file = File::where('id', $id_file)->first();
@@ -158,7 +232,6 @@ class FilesController extends Controller
 
         abort(404);
     }
-
     
     public function deleteFile($id)
     {
