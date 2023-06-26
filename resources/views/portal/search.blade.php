@@ -41,7 +41,7 @@
                 <br>
                 <br>
                 <form action="{{ route('search.document') }}" method="GET" class="search-form">
-                    <input type="text" name="search" placeholder="Digite um termo de pesquisa" value="{{ request('search') }}" style="width: 310px;">
+                    <input type="text" name="search" placeholder="Digite um termo de pesquisa" style="width: 310px;">
                     <button type="submit">Pesquisar</button>
                 </form>
                 <br>
@@ -52,6 +52,7 @@
                             <th>Email Proprietário</th>
                             <th>Arquivo</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,9 +61,15 @@
                             <td>{{ $file['name_user'] }}</td>
                             <td>{{ $file['email_user'] }}</td>
                             <td>{{ $file['filename'] }}</td>
-                            <td>
-                                <a href="{{ route('download', $file['id']) }}">Download</a>
-                            </td>
+                            @foreach ($file['acoes'] as $acao)
+                                <td>
+                                    @if ($acao == 'Download')
+                                        <a href="{{ route('download', $file['id']) }}">Download</a>
+                                    @elseif ($acao == 'Excluir')
+                                        <a href="{{ route('delete', $file['id']) }}" onclick="return confirmDelete();">Excluir</a>
+                                    @endif
+                                </td>
+                            @endforeach
                         </tr>
                     @endforeach
                     </tbody>
@@ -76,6 +83,12 @@
     </div>
 
     <div id="dropDownSelect1"></div>
+
+    <script>
+        function confirmDelete() {
+            return confirm('Tem certeza que deseja excluir o arquivo?');
+        }
+    </script>
 
     <script src="{{ asset('vendor/jquery/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('vendor/animsition/js/animsition.min.js') }}"></script>

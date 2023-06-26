@@ -19,4 +19,5 @@ Route::match(['get', 'post'], '/portal', [LoginController::class, 'showPortal'])
 Route::match(['get', 'post'], '/portal/upload', [FilesController::class, 'uploadDocument'])->name('upload.document')->middleware('auth');
 Route::match(['get', 'post'], '/portal/share', [FilesController::class, 'shareDocument'])->name('share.document')->middleware('auth');
 Route::match(['get', 'post'], '/portal/search', [FilesController::class, 'searchDocument'])->name('search.document')->middleware('auth');
-Route::get('/download/{id_file}', [FilesController::class, 'download'])->name('download')->middleware('auth');
+Route::get('/download/{id_file}', [FilesController::class, 'downloadFile'])->name('download')->middleware('auth');
+Route::get('/delete/{id_file}', [FilesController::class, 'deleteFile'])->name('delete')->middleware('auth');

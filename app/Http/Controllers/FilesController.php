@@ -97,7 +97,8 @@ class FilesController extends Controller
                     'name_user' => $user->name,
                     'email_user' => $user->email,
                     'filename' => $file->filename,
-                    'url' => $file->path
+                    'url' => $file->path,
+                    'acoes' => ['Download', 'Excluir']
                 ];
             }
 
@@ -108,14 +109,31 @@ class FilesController extends Controller
 
                 $owner_file = File::where('id', $documento_id)->get(['id', 'filename', 'path', 'user_id'])->first();
 
-                $owner = $user = User::select('name', 'email')->where('id', $owner_file->user_id)->first();
+                $owner = User::select('name', 'email')->where('id', $owner_file->user_id)->first();
+
+                $actions = AcoesDocumentosCompartilhados::where('documento_compartilhado_id', $file->id)->get(['acao']);
+                
+                $listActions = [];
+
+                if ($actions){
+                    foreach ($actions as $action){
+                        if ($action->acao === 'visualizar'){
+                            $listActions[] = 'Download';
+                        } else {
+                            $listActions[] = 'Excluir';
+                        }
+                    };
+                } else {
+                    $listActions[] = 'Download';
+                }
 
                 $storageFiles[] = [
                     'id' => $owner_file->id,
                     'name_user' => $owner->name,
                     'email_user' => $owner->email,
                     'filename' => $owner_file->filename,
-                    'url' => $owner_file->path
+                    'url' => $owner_file->path,
+                    'acoes' => $listActions
                 ];
             }
 
@@ -123,7 +141,7 @@ class FilesController extends Controller
         }
     }
 
-    public function download($id_file)
+    public function downloadFile($id_file)
     {
         $owner_file = File::where('id', $id_file)->first();
 
@@ -139,6 +157,24 @@ class FilesController extends Controller
         }
 
         abort(404);
+    }
+
+    
+    public function deleteFile($id)
+    {
+        $file = File::find($id);
+
+        if (!$file) {
+            return response()->json(['message' => 'Arquivo não encontrado'], 404);
+        }
+
+        $path = $file->path . '/' . $file->filename;
+
+        Storage::delete($path);
+
+        $file->delete();
+
+        return redirect()->route('search.document');
     }
 
 }
