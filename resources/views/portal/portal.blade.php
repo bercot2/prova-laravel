@@ -25,6 +25,12 @@
 			<div class="wrap-login100">
 				<div class="portal-options" style="display: flex;justify-content: center;flex-direction: column;">
                     <div class="container-login100-form-btn">
+                        <b class="portal-option-label">
+                            {{$user}}
+                        </b>
+                    </div>
+
+                    <div class="container-login100-form-btn">
                         <a href="{{ route('upload.document') }}" class="login100-form-btn" style="gap:6px;background: #333333; border-radius: 10px; cursor: pointer">
                             <span class="portal-option-icon">
                                 <i class="zmdi zmdi-upload"></i>

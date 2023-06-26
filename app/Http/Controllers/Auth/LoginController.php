@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,10 @@ class LoginController extends Controller
     }
 
     public function showPortal(){
-        return view('portal.portal');
+        $id_user = auth()->id();
+
+        $user = User::where('id', $id_user)->first();
+
+        return view('portal.portal', ['user' => $user->email]);
     }
 }
