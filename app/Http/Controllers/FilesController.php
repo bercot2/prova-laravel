@@ -210,8 +210,6 @@ class FilesController extends Controller
             }
 
             return view('portal.search', ['files' => $storageFiles]);
-
-            return view('portal.search', ['files' => $new_files]);
         }
     }
 
